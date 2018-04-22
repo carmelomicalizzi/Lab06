@@ -1,5 +1,6 @@
 package it.polito.tdp.meteo.db;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -111,7 +112,9 @@ public class MeteoDAO {
 		for(Rilevamento r : rilevamentiLocalitaMese)
 			somma += r.getUmidita();
 		
-		return somma / rilevamentiLocalitaMese.size();
+		double avg = new BigDecimal(somma / rilevamentiLocalitaMese.size()).setScale(2 , BigDecimal.ROUND_UP).doubleValue();
+		
+		return avg;
 	}
 
 }

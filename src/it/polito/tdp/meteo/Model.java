@@ -27,12 +27,12 @@ public class Model {
 
 	public String getUmiditaMedia(int mese) {
 		
-		String elenco = "";
+		String elenco = "L'umidità media per il mese selezionato è:\n\n";
 		
 		
 		for(Citta c : meteoDAO.getCitta())
 			
-			elenco += c.getNome() +": " + meteoDAO.getAvgRilevamentiLocalitaMese(mese, c.getNome()) +"\n";
+			elenco += c.getNome() +": " + meteoDAO.getAvgRilevamentiLocalitaMese(mese, c.getNome()) +"%\n";
 
 		return elenco;
 	}
@@ -55,18 +55,23 @@ public class Model {
 		soluzione = new ArrayList<SimpleCity>();		
 		this.recursive(0, soluzione);
 		
-		return soluzione.toString() + this.punteggioSoluzione(soluzione);
+		String elencoSol = "";
+		for(SimpleCity sc : soluzione) {
+			elencoSol += sc.getNome() +", ";
+		}
+		elencoSol = elencoSol.substring(0, elencoSol.length()-2);
+		elencoSol += ":\n\nCosto ottimale: " + this.punteggioSoluzione(soluzione);
+		
+		return elencoSol;
 	}
 	
 	public void recursive(int livello, List<SimpleCity> parziale) {
 		
 		if(livello >= NUMERO_GIORNI_TOTALI) {
-			
-		
-		double score = 0.0;
+
 		
 		if(this.punteggioSoluzione(parziale) < bestScore) {
-			bestScore = score;
+			bestScore = this.punteggioSoluzione(parziale);
 			soluzione = new ArrayList<SimpleCity>(parziale);
 		}
 			
